@@ -1,0 +1,21 @@
+{
+  "name": "maelysnath",
+  "version": "1.0.0",
+  "description": "simple bot dev par maelysnath",
+  "main": "index.js",
+  "scripts": {
+    "test": "index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "maelysnath.fr"
+  },
+  "author": "MaelysNath",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@discordjs/builders": "^1.8.1",
+    "discord-buttons": "^4.0.0-deprecated",
+    "discord.js": "^14.15.2",
+    "dotenv": "^16.4.5"
+  }
+}
