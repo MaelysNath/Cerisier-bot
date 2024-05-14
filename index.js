@@ -35,6 +35,18 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
   });
 
+//Lorsque qu'un membre rejoint le serveur, il obtient un rôle automatiquement
+  client.on('guildMemberAdd', member => {
+    const roleId = '1239704991447650335'; 
+    const role = member.guild.roles.cache.get(roleId);
+    if (role) {
+        member.roles.add(role)
+            .then(() => console.log(`Rôle ajouté à ${member.user.tag}`))
+            .catch(console.error);
+    } else {
+        console.error(`Impossible de trouver le rôle avec l'ID ${roleId}`);
+    }
+});
 
 
 //quand une personne tape la commande "!bienvenue" un message "embed" ainsi qu'un boutton "je veux entrer"
