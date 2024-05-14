@@ -16,6 +16,7 @@
     "@discordjs/builders": "^1.8.1",
     "discord-buttons": "^4.0.0-deprecated",
     "discord.js": "^14.15.2",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "fs": "^0.0.1-security"
   }
 }
