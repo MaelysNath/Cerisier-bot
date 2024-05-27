@@ -6,6 +6,9 @@
 //déclarations des intents
 const { Client, EmbedBuilder, ChannelType, Collection, GatewayIntentBits, Partials, ButtonBuilder, ButtonStyle, ActionRowBuilder  } = require( "discord.js" );
 require("dotenv").config();
+const fs = require('fs');
+const path = require('path');
+const config = require('./config.json');
 const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
@@ -29,17 +32,26 @@ const client = new Client({
 	]
 });
 
-//lorsque le bot est en ligne
-client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-  });
 
+// Evenement
+const eventsPath = path.join(__dirname, 'events');
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 
-  //création automatique des therads/likes à chaque messages envoyés dans le salon spécifique
+for (const file of eventFiles) {
+  const filePath = path.join(eventsPath, file);
+  const event = require(filePath);
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(...args, client));
+  } else {
+    client.on(event.name, (...args) => event.execute(...args, client));
+  }
+}
+
+//création automatique des therads/likes à chaque messages envoyés dans le salon spécifique
 	
     client.on('messageCreate', async msg => {
 	
-      //Salons 
+//Salons 
       let salons = ["1238955606832971846", "1238954184863256667", "1238955205324832841"] // ID des salon pour que le bot exécute les therads/likes
       for(let i = 0; i < salons.length; i++) {
         if(msg.channel.id === salons[i]){
@@ -53,7 +65,7 @@ client.on('ready', () => {
       }	
     
       
-    //une autre mais dans une autre salon spécifique sans les threads
+//une autre mais dans une autre salon spécifique sans les threads
         let salons3 = ("1214972953201082428"); // ID du salon spécifique
         if(msg.channel.id === salons3){
           msg.react('✅');
@@ -65,7 +77,7 @@ client.on('ready', () => {
   
 
 //Lorsque qu'un membre rejoint le serveur, il obtient un rôle automatiquement
-
+/*
   client.on('guildMemberAdd', member => {
     const roleId = '1239704991447650335'; //ID du rôle que tu souhaite lui attribuer à son arrivé
     const role = member.guild.roles.cache.get(roleId);
@@ -77,9 +89,11 @@ client.on('ready', () => {
         console.error(`Impossible de trouver le rôle avec l'ID ${roleId}`);
     }
 });
+*/
 
+//envoyer un embed du système d'adhésion à l'aide d'une commande
 client.on('messageCreate', async (message) => {
-  if (message.content === '!bienvenue') {
+  if (message.content === '!adminwelc') {
     const embed = new EmbedBuilder()
       .setColor('#0099ff')
       .setTitle('Bienvenue sur le serveur')
